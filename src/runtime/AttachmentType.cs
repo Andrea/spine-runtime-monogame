@@ -6,9 +6,8 @@ namespace Spine.Runtime.MonoGame
 {
 	public enum AttachmentType
 	{
-		region, 
-
-		regionSequence
+		Region, 
+		RegionSequence
 	}
 }
 

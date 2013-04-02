@@ -21,7 +21,7 @@ namespace Spine.Runtime.MonoGame.Json
 		private const String TIMELINE_ATTACHMENT = "attachment";
 		private const String TIMELINE_COLOR = "color";
 
-		public Animation ReadAnimationJsonFile (string jsonFile, SkeletonData skeletonData, float scale = 1)
+		public Animation ReadAnimationJsonFile (AndroidGameActivity activity, string jsonFile, SkeletonData skeletonData, float scale = 1)
 		{
 			if (skeletonData == null)
 			{
@@ -30,7 +30,18 @@ namespace Spine.Runtime.MonoGame.Json
 
 			var timelines = new List<ITimeline> ();
 
-			var jsonText = File.ReadAllText (jsonFile);
+		
+
+			string jsonText = null;
+#if iOS
+			jsonText = File.ReadAllText (jsonFile);
+#elif ANDROID
+
+			using (var inputStram = activity.Assets.Open(jsonFile))
+			{
+				jsonText = new StreamReader(inputStram).ReadToEnd();
+			}
+#endif
 			JObject data = JObject.Parse (jsonText);
 
 			var boneTimelines = this.ReadAnimationBones (skeletonData, data, scale);

@@ -1,6 +1,9 @@
 /// <summary>
 /// TextureMapJsonReader.cs
 /// </summary>
+
+using System.Text;
+
 namespace Spine.Runtime.MonoGame.Json
 {
 	using System;
@@ -12,7 +15,7 @@ namespace Spine.Runtime.MonoGame.Json
 
 	using Newtonsoft.Json.Linq;
 
-	using Spine.Runtime.MonoGame.Graphics;
+	using Graphics;
 
 	public class TextureMapJsonReader : BaseJsonReader
 	{
@@ -33,11 +36,20 @@ namespace Spine.Runtime.MonoGame.Json
 
 	    */
 
-		public TextureAtlas ReadTextureJsonFile (string jsonFile, Texture2D texture)
+		public TextureAtlas ReadTextureJsonFile (AndroidGameActivity activity, string jsonFile, Texture2D texture)
 		{
 			Dictionary<string, TextureRegion> regions = new Dictionary<string, TextureRegion>();
 
-			var jsonText = File.ReadAllText (jsonFile);
+			string jsonText = null;
+#if iOS
+			jsonText = File.ReadAllText (jsonFile);
+#elif ANDROID
+
+			using (var inputStram = activity.Assets.Open(jsonFile))
+			{
+				jsonText = new StreamReader(inputStram).ReadToEnd();
+			}
+#endif			
 			JObject data = JObject.Parse (jsonText);
 
 			foreach (var frame in data["frames"])

@@ -1,17 +1,13 @@
-/// <summary>
-/// SkeletonJsonReader.cs
-/// 2013-March
-/// </summary>
+using Microsoft.Xna.Framework;
+
 namespace Spine.Runtime.MonoGame.Json
 {
 	using System;
 	using System.IO;	
 	using System.Runtime.Serialization;
-
 	using Newtonsoft.Json.Linq;
-
-	using Spine.Runtime.MonoGame.Attachments;
-	using Spine.Runtime.MonoGame.Graphics;
+	using Attachments;
+	using Graphics;
 
 	public class SkeletonJsonReader : BaseJsonReader
 	{
@@ -27,11 +23,19 @@ namespace Spine.Runtime.MonoGame.Json
 			this.attachmentLoader = attachmentLoader;
 		}
 
-		public Skeleton ReadSkeletonJsonFile (string jsonFile, float scale = 1)
+		public Skeleton ReadSkeletonJsonFile(AndroidGameActivity activity, string jsonFile, float scale = 1)
 		{
 			SkeletonData skeletonData = new SkeletonData (Path.GetFileNameWithoutExtension (jsonFile));
-
-			var jsonText = File.ReadAllText (jsonFile);
+			string jsonText = null;
+#if iOS
+			jsonText = File.ReadAllText (jsonFile);
+#elif ANDROID
+					
+			using (var inputStram = activity.Assets.Open(jsonFile))
+			{
+				jsonText = new StreamReader(inputStram).ReadToEnd();
+			}
+#endif
 			JObject data = JObject.Parse (jsonText);
 
 			this.ReadSkeletonBones (skeletonData, data, scale);
@@ -77,12 +81,12 @@ namespace Spine.Runtime.MonoGame.Json
 		{
 			string attachmentName = this.Read (map, "name", name);
 
-			var attachmentType = AttachmentType.region;
+			var attachmentType = AttachmentType.Region;
 
 			var attachmentRegionType = (String)map ["type"];
 			if (attachmentRegionType != null && String.Compare (attachmentRegionType, "regionSequence", true) == 0)
 			{
-				attachmentType = AttachmentType.regionSequence;
+				attachmentType = AttachmentType.RegionSequence;
 			}
 
 			Attachment attachment = this.attachmentLoader.NewAttachment (attachmentType, attachmentName);

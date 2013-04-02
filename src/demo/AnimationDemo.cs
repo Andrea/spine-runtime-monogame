@@ -35,7 +35,7 @@ namespace Demo
 			this.graphicsDeviceManager.SupportedOrientations = 
 				DisplayOrientation.LandscapeLeft | 
 				DisplayOrientation.LandscapeRight |
-				DisplayOrientation.PortraitDown | 
+				
 				DisplayOrientation.Portrait;
 
 			this.textureMaps = new List<Texture2D> ();
@@ -58,15 +58,15 @@ namespace Demo
 			this.textureMaps.Add (crabTextureMap);
 
 			var texturePackerReader = new TextureMapJsonReader ();			
-			var textureAtlas = texturePackerReader.ReadTextureJsonFile ("Content/crab.json", crabTextureMap);
+			var textureAtlas = texturePackerReader.ReadTextureJsonFile (Activity,"Content/crab.json", crabTextureMap);
 
 			var skeletonReader = new SkeletonJsonReader (new TextureAtlasAttachmentLoader (textureAtlas));
-			this.skeleton = skeletonReader.ReadSkeletonJsonFile ("Content/crab-skeleton.json");
+			this.skeleton = skeletonReader.ReadSkeletonJsonFile (Activity,"Content/crab-skeleton.json");
 			this.skeleton.FlipY = true;
 
 			var animationReader = new AnimationJsonReader ();
-			this.animationWalk = animationReader.ReadAnimationJsonFile ("Content/crab-WalkLeft.json", skeleton.Data);
-			this.animationJump = animationReader.ReadAnimationJsonFile ("Content/crab-Jump.json", skeleton.Data);
+			this.animationWalk = animationReader.ReadAnimationJsonFile ( Activity,"Content/crab-WalkLeft.json", skeleton.Data);
+			this.animationJump = animationReader.ReadAnimationJsonFile (Activity,"Content/crab-Jump.json", skeleton.Data);
 
 			this.animation = 0;
 			this.SetSkeletonStartPosition ();

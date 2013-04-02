@@ -5,21 +5,20 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{6DAF921C-56F4-4A90-B708-ED74E6D59209}</ProjectGuid>
+    <ProjectGuid>{E178EC21-64B3-443D-9F3D-719C5642C090}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Demo.Spine.Android</RootNamespace>
-    <AssemblyName>Demo.Spine.Android</AssemblyName>
+    <RootNamespace>Spine.Runtime.Monogame</RootNamespace>
+    <AssemblyName>Spine.Runtime.Monogame</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <AndroidApplication>true</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AndroidSupportedAbis>armeabi-v7a%3bx86</AndroidSupportedAbis>
+    <AndroidSupportedAbis>armeabi%3barmeabi-v7a%3bx86</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
     <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
-    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,6 +44,10 @@
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="OpenTK" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -56,46 +59,56 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activity1.cs" />
-    <Compile Include="AnimationDemo.cs" />
-    <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="Animation\Animation.cs" />
+    <Compile Include="Animation\AttachmentTimeline.cs" />
+    <Compile Include="Animation\ColorTimeline.cs" />
+    <Compile Include="Animation\CurveTimeline.cs" />
+    <Compile Include="Animation\ITimeline.cs" />
+    <Compile Include="Animation\RotateTimeline.cs" />
+    <Compile Include="Animation\ScaleTimeline.cs" />
+    <Compile Include="Animation\TranslateTimeline.cs" />
+    <Compile Include="Attachments\Attachment.cs" />
+    <Compile Include="Attachments\IAttachmentLoader.cs" />
+    <Compile Include="Attachments\RegionAttachment.cs" />
+    <Compile Include="Attachments\RegionSequenceAttachment.cs" />
+    <Compile Include="Attachments\RegionSequenceMode.cs" />
+    <Compile Include="Attachments\RegionSequenceModeConvert.cs" />
+    <Compile Include="Attachments\TextureAtlasAttachmentLoader.cs" />
+    <Compile Include="AttachmentType.cs" />
+    <Compile Include="Bone.cs" />
+    <Compile Include="BoneData.cs" />
+    <Compile Include="Graphics\TextureAtlas.cs" />
+    <Compile Include="Graphics\TextureRegion.cs" />
+    <Compile Include="Json\AnimationJsonReader.cs" />
+    <Compile Include="Json\BaseJsonReader.cs" />
+    <Compile Include="Json\SkeletonJsonReader.cs" />
+    <Compile Include="Json\TextureMapJsonReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="Skeleton.cs" />
+    <Compile Include="SkeletonData.cs" />
+    <Compile Include="Skin.cs" />
+    <Compile Include="Slot.cs" />
+    <Compile Include="SlotData.cs" />
+    <Compile Include="Utils\MathUtils.cs" />
+    <Compile Include="Utils\SearchUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\Content\crab.json" />
-    <AndroidAsset Include="Assets\Content\crab-Jump.json" />
-    <AndroidAsset Include="Assets\Content\crab-skeleton.json" />
-    <AndroidAsset Include="Assets\Content\crab-WalkLeft.json" />
-    <None Include="Resources\AboutResources.txt" />
-    <None Include="Assets\AboutAssets.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\Values\Strings.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\Icon.png" />
+    <AndroidAsset Include="Assets\Content\spriteFont1.xnb" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Layout\" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\Splash.png" />
+    <AndroidResource Include="Resources\Values\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Values\Styles.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\runtime\spine-runtime-monogame.Android.csproj">
-      <Project>{E178EC21-64B3-443D-9F3D-719C5642C090}</Project>
-      <Name>spine-runtime-monogame.Android</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\Content\crab.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </AndroidAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Properties\AndroidManifest.xml" />
+    <Content Include="Resources\AboutResources.txt" />
+    <AndroidResource Include="Resources\Drawable\Icon.png" />
+    <AndroidResource Include="Resources\Drawable\Splash.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

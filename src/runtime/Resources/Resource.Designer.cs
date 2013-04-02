@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: Android.Runtime.ResourceDesignerAttribute("Demo.Spine.Android.Resource", IsApplication=true)]
+[assembly: Android.Runtime.ResourceDesignerAttribute("Spine.Runtime.Monogame.Resource", IsApplication=true)]
 
-namespace Demo.Spine.Android
+namespace Spine.Runtime.Monogame
 {
 	
 	
@@ -53,8 +53,11 @@ namespace Demo.Spine.Android
 		public partial class String
 		{
 			
+			// aapt resource value: 0x7f030001
+			public const int ApplicationName = 2130903041;
+			
 			// aapt resource value: 0x7f030000
-			public const int ApplicationName = 2130903040;
+			public const int Hello = 2130903040;
 			
 			private String()
 			{

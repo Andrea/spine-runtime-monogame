@@ -1,11 +1,10 @@
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using Microsoft.Xna.Framework;
 
-namespace Demo.Spine.Android
+namespace spine_runtime_monogame.Android
 {
-	[Activity(Label = "Demo.Spine.Android"
+	[Activity(Label = "spine-runtime-monogame.Android"
 		, MainLauncher = true
 		, Icon = "@drawable/icon"
 		, Theme = "@style/Theme.Splash"
@@ -13,15 +12,15 @@ namespace Demo.Spine.Android
 		, LaunchMode = LaunchMode.SingleInstance
 		, ScreenOrientation = ScreenOrientation.SensorLandscape
 		, ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden)]
-	public class Activity1 : AndroidGameActivity
+	public class Activity1 : Microsoft.Xna.Framework.AndroidGameActivity
 	{
 		protected override void OnCreate(Bundle bundle)
 		{
 			base.OnCreate(bundle);
-			AnimationDemo.Activity = this;
-			var g = new AnimationDemo();
-			SetContentView(g.Window);
-			g.Run();
+		//	Game1.Activity = this;
+		//	var g = new Game1();
+		//	SetContentView(g.Window);
+		//	g.Run();
 		}
 	}
 }

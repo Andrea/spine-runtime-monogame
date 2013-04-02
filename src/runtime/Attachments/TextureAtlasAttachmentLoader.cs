@@ -22,10 +22,10 @@ namespace Spine.Runtime.MonoGame.Attachments
 		
 		public Attachment NewAttachment (AttachmentType attachmentType, String name) {
 			switch (attachmentType) {
-				case AttachmentType.region:
+				case AttachmentType.Region:
 					return this.CreateRegionAttachment(name);
 
-				case AttachmentType.regionSequence:
+				case AttachmentType.RegionSequence:
 					throw new NotImplementedException("Not yet supported by Spine - Future development required");
 					
 				default:
