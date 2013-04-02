@@ -2,16 +2,18 @@
 /// Animation demo.
 /// 2013-March
 /// </summary>
+
+using Spine.Runtime.MonoGame;
+using Spine.Runtime.MonoGame.Attachments;
+using Spine.Runtime.MonoGame.Json;
+
 namespace Demo
 {
 	using System.Collections.Generic;
 	using Microsoft.Xna.Framework;
 	using Microsoft.Xna.Framework.Graphics;
 	using Microsoft.Xna.Framework.Input.Touch;
-	using Spine.Runtime.MonoGame;
-	using Spine.Runtime.MonoGame.Attachments;
-	using Spine.Runtime.MonoGame.Graphics;
-	using Spine.Runtime.MonoGame.Json;
+	
 
 	public class AnimationDemo : Game
 	{

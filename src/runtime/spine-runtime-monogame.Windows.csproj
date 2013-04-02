@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{83894B96-C04D-420F-84D2-2022B81E7B2C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>spine_runtime_monogame.Windows</RootNamespace>
+    <AssemblyName>spine-runtime-monogame.Windows</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Animation\Animation.cs" />
+    <Compile Include="Animation\AttachmentTimeline.cs" />
+    <Compile Include="Animation\ColorTimeline.cs" />
+    <Compile Include="Animation\CurveTimeline.cs" />
+    <Compile Include="Animation\ITimeline.cs" />
+    <Compile Include="Animation\RotateTimeline.cs" />
+    <Compile Include="Animation\ScaleTimeline.cs" />
+    <Compile Include="Animation\TranslateTimeline.cs" />
+    <Compile Include="Attachments\Attachment.cs" />
+    <Compile Include="Attachments\IAttachmentLoader.cs" />
+    <Compile Include="Attachments\RegionAttachment.cs" />
+    <Compile Include="Attachments\RegionSequenceAttachment.cs" />
+    <Compile Include="Attachments\RegionSequenceMode.cs" />
+    <Compile Include="Attachments\RegionSequenceModeConvert.cs" />
+    <Compile Include="Attachments\TextureAtlasAttachmentLoader.cs" />
+    <Compile Include="AttachmentType.cs" />
+    <Compile Include="Bone.cs" />
+    <Compile Include="BoneData.cs" />
+    <Compile Include="Graphics\TextureAtlas.cs" />
+    <Compile Include="Graphics\TextureRegion.cs" />
+    <Compile Include="Json\AnimationJsonReader.cs" />
+    <Compile Include="Json\BaseJsonReader.cs" />
+    <Compile Include="Json\SkeletonJsonReader.cs" />
+    <Compile Include="Json\TextureMapJsonReader.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Skeleton.cs" />
+    <Compile Include="SkeletonData.cs" />
+    <Compile Include="Skin.cs" />
+    <Compile Include="Slot.cs" />
+    <Compile Include="SlotData.cs" />
+    <Compile Include="Utils\MathUtils.cs" />
+    <Compile Include="Utils\SearchUtils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Lidgren.Network, Version=2011.3.12.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\MonoGame\v3.0\Assemblies\WindowsGL\Lidgren.Network.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK" />
+    <Reference Include="Tao.Sdl" />
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\third-party\MonoGame\MonoGame.Framework\MonoGame.Framework.Windows.csproj">
+      <Project>{7DE47032-A904-4C29-BD22-2D235E8D91BA}</Project>
+      <Name>MonoGame.Framework.Windows</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
