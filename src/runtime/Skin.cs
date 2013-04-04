@@ -88,7 +88,7 @@ namespace Spine.Runtime.MonoGame
 			foreach (var entry in attachments)
 			{
 				int slotIndex = entry.Key.slotIndex;
-				Slot slot = skeleton.slots [slotIndex];
+				Slot slot = skeleton.Slots [slotIndex];
 				if (slot.Attachment == entry.Value)
 				{
 					Attachment attachment = GetAttachment (slotIndex, entry.Key.name);

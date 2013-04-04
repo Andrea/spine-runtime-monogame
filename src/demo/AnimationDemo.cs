@@ -1,165 +1,154 @@
-/// <summary>
-/// Animation demo.
-/// 2013-March
-/// </summary>
-
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Spine.Runtime.MonoGame;
 using Spine.Runtime.MonoGame.Attachments;
+using Spine.Runtime.MonoGame.Graphics;
 using Spine.Runtime.MonoGame.Json;
-
+using Spine.Runtime.Monogame.Animation;
+#if iOS
+	using Microsoft.Xna.Framework.Input.Touch;
+#endif
 namespace Demo
 {
-	using System.Collections.Generic;
-	using Microsoft.Xna.Framework;
-	using Microsoft.Xna.Framework.Graphics;
-	using Microsoft.Xna.Framework.Input.Touch;
-	
-
 	public class AnimationDemo : Game
 	{
-		private readonly GraphicsDeviceManager graphicsDeviceManager;
-		private Texture2D lineTexture;
-		private List<Texture2D> textureMaps;
-		private SpriteBatch spriteBatch;
-		private Skeleton skeleton;
-		private Animation animationWalk;
-		private Animation animationJump;
-		private int animation = 0;
-		private float timer = 1;
+		private readonly GraphicsDeviceManager _graphicsDeviceManager;
+		private int _animation;
+		private Animation _animationJump;
+		private Animation _animationWalk;
+		private Texture2D _lineTexture;
+		private Skeleton _skeleton;
+		private SpriteBatch _spriteBatch;
+		private List<Texture2D> _textureMaps;
+		private float _timer = 1;
 
-		public AnimationDemo ()
+		public AnimationDemo()
 		{
-			this.graphicsDeviceManager = new GraphicsDeviceManager (this);
-			this.graphicsDeviceManager.IsFullScreen = true;
-
-			this.graphicsDeviceManager.SupportedOrientations = 
-				DisplayOrientation.LandscapeLeft | 
+			_graphicsDeviceManager = new GraphicsDeviceManager(this);
+#if !WINDOWS
+			graphicsDeviceManager.IsFullScreen = true;
+			graphicsDeviceManager.SupportedOrientations = 
+				DisplayOrientation.LandscapeLeft |
 				DisplayOrientation.LandscapeRight |
-				
 				DisplayOrientation.Portrait;
+#endif
+			_textureMaps = new List<Texture2D>();
 
-			this.textureMaps = new List<Texture2D> ();
-
-			this.Content.RootDirectory = "Content";
+			Content.RootDirectory = "Content";
 		}
 
-		protected override void Initialize ()
+		protected override void Initialize()
 		{
+#if iOS
 			TouchPanel.EnabledGestures = GestureType.Tap;
-			
-			base.Initialize ();
-		}
-
-		protected override void LoadContent ()
-		{
-			this.spriteBatch = new SpriteBatch (this.graphicsDeviceManager.GraphicsDevice);
-
-			var crabTextureMap = Content.Load<Texture2D> ("crab.png");
-			this.textureMaps.Add (crabTextureMap);
-
-			var texturePackerReader = new TextureMapJsonReader ();			
-			var textureAtlas = texturePackerReader.ReadTextureJsonFile (Activity,"Content/crab.json", crabTextureMap);
-
-			var skeletonReader = new SkeletonJsonReader (new TextureAtlasAttachmentLoader (textureAtlas));
-			this.skeleton = skeletonReader.ReadSkeletonJsonFile (Activity,"Content/crab-skeleton.json");
-			this.skeleton.FlipY = true;
-
-			var animationReader = new AnimationJsonReader ();
-			this.animationWalk = animationReader.ReadAnimationJsonFile ( Activity,"Content/crab-WalkLeft.json", skeleton.Data);
-			this.animationJump = animationReader.ReadAnimationJsonFile (Activity,"Content/crab-Jump.json", skeleton.Data);
-
-			this.animation = 0;
-			this.SetSkeletonStartPosition ();
-
-			// used for debugging - draw the bones
-			this.lineTexture = new Texture2D(GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
-			this.lineTexture.SetData(new[]{Color.White});
-			this.textureMaps.Add(lineTexture);
-
-			base.LoadContent ();
-		}
-
-		protected override void Draw (GameTime gameTime)
-		{
-			this.spriteBatch.Begin ();
-
-			this.GraphicsDevice.Clear (Color.CornflowerBlue);
-
-			if (animation == 0)
-			{
-				this.Animate (this.animationJump);
-			}
-			else
-			{
-				this.Animate (this.animationWalk);
-
-			}
-
-			this.spriteBatch.End ();
-
-			base.Draw (gameTime);
+#endif
+			base.Initialize();
 		}
 		
-		private void Animate (Animation animation)
+		protected override void LoadContent()
 		{
-			// In reality you'd use the gameTime to calculate the animation but this is for demonstration purposes.
-			// Also you'd probably do the calculations in Update and not Draw
-			animation.Apply (this.skeleton, timer++ / 100, true);
-			
-			this.skeleton.UpdateWorldTransform ();
-			this.skeleton.Draw (this.spriteBatch);
-			//this.skeleton.DrawDebug(this.spriteBatch, this.lineTexture);
+			_spriteBatch = new SpriteBatch(_graphicsDeviceManager.GraphicsDevice);
+#if WINDOWS
+			var crabTextureMap = Content.Load<Texture2D>("crab");
+#else
+			var crabTextureMap = Content.Load<Texture2D> ("crab.png");
+#endif
+			_textureMaps.Add(crabTextureMap);
+
+			var texturePackerReader = new TextureMapJsonReader();
+#if WINDOWS
+			TextureAtlas textureAtlas = texturePackerReader.ReadTextureJsonFile("Content/crab.json", crabTextureMap);
+#elif ANDROID
+			var textureAtlas = texturePackerReader.ReadTextureJsonFile (Activity,"Content/crab.json", crabTextureMap);
+#endif
+			var skeletonReader = new SkeletonJsonReader(new TextureAtlasAttachmentLoader(textureAtlas));
+#if WINDOWS
+			_skeleton = skeletonReader.ReadSkeletonJsonFile("Content/crab-skeleton.json");
+#elif ANDROID
+
+			this.skeleton = skeletonReader.ReadSkeletonJsonFile (Activity,"Content/crab-skeleton.json");
+#endif
+			_skeleton.FlipY = true;
+
+			var animationReader = new AnimationJsonReader();
+#if WINDOWS
+			_animationWalk = animationReader.ReadAnimationJsonFile("Content/crab-WalkLeft.json", _skeleton.Data);
+			_animationJump = animationReader.ReadAnimationJsonFile("Content/crab-Jump.json", _skeleton.Data);
+#elif ANDROID
+
+			this.animationWalk = animationReader.ReadAnimationJsonFile ( Activity,"Content/crab-WalkLeft.json", skeleton.Data);
+			this.animationJump = animationReader.ReadAnimationJsonFile (Activity,"Content/crab-Jump.json", skeleton.Data);
+#endif
+			_animation = 0;
+			SetSkeletonStartPosition();
+
+			// used for debugging - draw the bones
+			_lineTexture = new Texture2D(GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+			_lineTexture.SetData(new[] {Color.White});
+			_textureMaps.Add(_lineTexture);
+
+			base.LoadContent();
 		}
 
-		private void SetSkeletonStartPosition ()
+		protected override void Draw(GameTime gameTime)
 		{
-			this.skeleton.SetToBindPose ();
-			Bone root = skeleton.GetRootBone ();
-			root.X = 500;
-			root.Y = 700;
+			GraphicsDevice.Clear(Color.CornflowerBlue);
 			
-			this.skeleton.UpdateWorldTransform ();
+			_spriteBatch.Begin();
+			_skeleton.Draw(_spriteBatch);
+			_spriteBatch.End();
+
+			base.Draw(gameTime);
 		}
 
-		// Switch animations whenever the user touches the screen
-		protected override void Update (GameTime gameTime)
+		protected override void Update(GameTime gameTime)
 		{
-			if (TouchPanel.IsGestureAvailable)
+			if (++_animation > 1)
 			{
-				while (TouchPanel.IsGestureAvailable)
-				{
-					// swallow all touches 
-					TouchPanel.ReadGesture ();
-				}
-				
-				if (++animation > 1)
-				{
-					animation = 0;
-				}
-				
-				this.SetSkeletonStartPosition ();
+				_animation = 0;
 			}
-			
-			base.Update (gameTime);
+
+			SetSkeletonStartPosition();
+
+			Animate(_animationJump);
+			base.Update(gameTime);
 		}
 
-		protected override void Dispose (bool disposing)
+		protected override void Dispose(bool disposing)
 		{
-			if (this.textureMaps != null)
+			if (_textureMaps != null)
 			{
-				foreach (var textureMap in this.textureMaps)
+				foreach (var textureMap in _textureMaps)
 				{
 					if (textureMap != null && !textureMap.IsDisposed)
 					{
-						textureMap.Dispose ();
+						textureMap.Dispose();
 					}
 				}
-			
-				this.textureMaps = null;
+				_textureMaps = null;
 			}
 
-			base.Dispose (disposing);
+			base.Dispose(disposing);
+		}
+
+		private void SetSkeletonStartPosition()
+		{
+			_skeleton.SetToBindPose();
+			Bone root = _skeleton.GetRootBone();
+			root.X = 200;
+			root.Y = 350;
+
+			_skeleton.UpdateWorldTransform();
+		}
+
+		private void Animate(Animation animation)
+		{
+			// In reality you'd use the gameTime to calculate the animation but this is for demonstration purposes.
+			// Also you'd probably do the calculations in Update and not Draw
+			animation.Apply(_skeleton, _timer++/100, true);
+			_skeleton.UpdateWorldTransform();
 		}
 	}
 }
-

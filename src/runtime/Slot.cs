@@ -103,18 +103,18 @@ namespace Spine.Runtime.MonoGame
 		{
 			// TODO - compare with corona
 			this.Attachment = attachment;
-			this.attachmentTime = this.Skeleton.time;
+			this.attachmentTime = this.Skeleton.Time;
 		}
 		
 		public void SetAttachmentTime (float time)
 		{
-			this.attachmentTime = this.Skeleton.time - time;
+			this.attachmentTime = this.Skeleton.Time - time;
 		}
 		
 		/** Returns the time since the attachment was set. */
 		public float GetAttachmentTime ()
 		{
-			return this.Skeleton.time - this.attachmentTime;
+			return this.Skeleton.Time - this.attachmentTime;
 		}
 		
 		public void SetToBindPose ()

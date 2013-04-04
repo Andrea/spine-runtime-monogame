@@ -1,12 +1,9 @@
-/// <summary>
-/// Animation.cs
-/// 2013-March
-/// </summary>
-namespace Spine.Runtime.MonoGame
-{
-	using System;
-	using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
+using Spine.Runtime.MonoGame;
 
+namespace Spine.Runtime.Monogame.Animation
+{
 	public class Animation : IEquatable<Animation>
 	{
 		private readonly List<ITimeline> timelines;
@@ -27,7 +24,7 @@ namespace Spine.Runtime.MonoGame
 		{
 			get
 			{
-				return this.timelines;
+				return timelines;
 			}
 		}
 
@@ -95,17 +92,17 @@ namespace Spine.Runtime.MonoGame
 
 		public bool Equals (Animation other)
 		{
-			if (this.Name == null && other.Name == null)
+			if (Name == null && other.Name == null)
 			{
 				return true;
 			}
 
-			if (this.Name == null || other.Name == null)
+			if (Name == null || other.Name == null)
 			{
 				return false;
 			}
 
-			return String.Compare (this.Name, other.Name) == 0;
+			return String.CompareOrdinal(Name, other.Name) == 0;
 		}
 
 		public override bool Equals (Object obj)
@@ -115,13 +112,11 @@ namespace Spine.Runtime.MonoGame
 				return false;
 			}
 
-			Animation other = obj as Animation;
+			var other = obj as Animation;
 			if (other == null)
-			{
 				return false;
-			}
 
-			return this.Equals (other);
+			return Equals (other);
 		}
 	}
 }

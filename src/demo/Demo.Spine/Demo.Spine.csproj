@@ -49,9 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\demo\Content\crab.png">
+    <Content Include="..\..\demo\Content\crab.png">
       <Link>Content\crab.png</Link>
-    </None>
+    </Content>
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup />
@@ -66,18 +66,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\demo\Content\crab-Jump.json">
+    <Content Include="..\..\demo\Content\crab-Jump.json">
       <Link>Content\crab-Jump.json</Link>
-    </None>
-    <None Include="..\..\demo\Content\crab-skeleton.json">
+    </Content>
+    <Content Include="..\..\demo\Content\crab-skeleton.json">
       <Link>Content\crab-skeleton.json</Link>
-    </None>
-    <None Include="..\..\demo\Content\crab-WalkLeft.json">
+    </Content>
+    <Content Include="..\..\demo\Content\crab-WalkLeft.json">
       <Link>Content\crab-WalkLeft.json</Link>
-    </None>
-    <None Include="..\..\demo\Content\crab.json">
+    </Content>
+    <Content Include="..\..\demo\Content\crab.json">
       <Link>Content\crab.json</Link>
-    </None>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

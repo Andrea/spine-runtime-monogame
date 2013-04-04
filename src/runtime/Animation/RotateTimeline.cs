@@ -49,7 +49,7 @@ namespace Spine.Runtime.MonoGame
 				return;
 			} // Time is before first frame.
 			
-			Bone bone = skeleton.bones [boneIndex];
+			Bone bone = skeleton.Bones [boneIndex];
 			
 			if (time >= frames [frames.Length - 2])
 			{ // Time is after last frame.

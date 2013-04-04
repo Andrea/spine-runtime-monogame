@@ -1,12 +1,9 @@
-/// <summary>
-/// ColorTimeline.cs
-/// 2013-March
-/// </summary>
-namespace Spine.Runtime.MonoGame
-{
-	using Microsoft.Xna.Framework;
-	using Spine.Runtime.MonoGame.Utils;
+using Microsoft.Xna.Framework;
+using Spine.Runtime.MonoGame;
+using Spine.Runtime.MonoGame.Utils;
 
+namespace Spine.Runtime.Monogame.Animation
+{
 	public class ColorTimeline : CurveTimeline, ITimeline
 	{
 		private const int LAST_FRAME_TIME = -5;
@@ -14,88 +11,93 @@ namespace Spine.Runtime.MonoGame
 		private const int FRAME_G = 2;
 		private const int FRAME_B = 3;
 		private const int FRAME_A = 4;
-		private int slotIndex = -1;
 		private readonly float[] frames; // time, r, g, b, a, ...
-		
-		public ColorTimeline (int keyframeCount) :base (keyframeCount)
+		private int slotIndex = -1;
+
+		public ColorTimeline(int keyframeCount) : base(keyframeCount)
 		{
-			this.frames = new float[keyframeCount * 5];
-		}
-		
-		public float GetDuration ()
-		{
-			return this.frames [frames.Length - 5];
-		}
-		
-		public int GetKeyframeCount ()
-		{
-			return this.frames.Length / 5;
+			frames = new float[keyframeCount*5];
 		}
 
-		public void SetSlotIndex(int index)
+		#region ITimeline Members
+
+		public float GetDuration()
 		{
-			this.slotIndex = index;
+			return frames[frames.Length - 5];
 		}
 
-		/** Sets the time and value of the specified keyframe. */
-		public void SetKeyframe (int keyframeIndex, float time, float r, float g, float b, float a)
+		public int GetKeyframeCount()
 		{
-			keyframeIndex *= 5;
-			this.frames [keyframeIndex] = time;
-			this.frames [keyframeIndex + 1] = r;
-			this.frames [keyframeIndex + 2] = g;
-			this.frames [keyframeIndex + 3] = b;
-			this.frames [keyframeIndex + 4] = a;
+			return frames.Length/5;
 		}
-		
-		public void Apply (Skeleton skeleton, float time, float alpha)
+
+		public void Apply(Skeleton skeleton, float time, float alpha)
 		{
-			if (time < this.frames [0])
+			if (time < frames[0])
 			{
 				return;
 			} // Time is before first frame.
-			
-			Color color = skeleton.slots [this.slotIndex].Color;
-			
-			if (time >= frames [frames.Length - 5])
-			{ // Time is after last frame.
-				int i = this.frames.Length - 1;
-				float colorRed = this.frames [i - 3];
-				float colorGreen = this.frames [i - 2];
-				float colorBlue = this.frames [i - 1];
-				float colorAlpha = this.frames [i];
-				color = new Color (colorRed, colorGreen, colorBlue, colorAlpha);
+
+			Color color = skeleton.Slots[slotIndex].Color;
+
+			if (time >= frames[frames.Length - 5])
+			{
+				// Time is after last frame.
+				int i = frames.Length - 1;
+				float colorRed = frames[i - 3];
+				float colorGreen = frames[i - 2];
+				float colorBlue = frames[i - 1];
+				float colorAlpha = frames[i];
+				color = new Color(colorRed, colorGreen, colorBlue, colorAlpha);
 				return;
 			}
-			
+
 			// Interpolate between the last frame and the current frame.
-			int frameIndex = SearchUtils.BinarySearch (frames, time, 5);
-			float lastFrameR = this.frames [frameIndex - 4];
-			float lastFrameG = this.frames [frameIndex - 3];
-			float lastFrameB = this.frames [frameIndex - 2];
-			float lastFrameA = this.frames [frameIndex - 1];
-			float frameTime = this.frames [frameIndex];
-			float percent = MathUtils.Clamp (1 - (time - frameTime) / (frames [frameIndex + LAST_FRAME_TIME] - frameTime), 0, 1);
-			percent = GetCurvePercent (frameIndex / 5 - 1, percent);
-			
-			float r = lastFrameR + (frames [frameIndex + FRAME_R] - lastFrameR) * percent;
-			float g = lastFrameG + (frames [frameIndex + FRAME_G] - lastFrameG) * percent;
-			float b = lastFrameB + (frames [frameIndex + FRAME_B] - lastFrameB) * percent;
-			float a = lastFrameA + (frames [frameIndex + FRAME_A] - lastFrameA) * percent;
+			int frameIndex = SearchUtils.BinarySearch(frames, time, 5);
+			float lastFrameR = frames[frameIndex - 4];
+			float lastFrameG = frames[frameIndex - 3];
+			float lastFrameB = frames[frameIndex - 2];
+			float lastFrameA = frames[frameIndex - 1];
+			float frameTime = frames[frameIndex];
+			float percent = MathUtils.Clamp(1 - (time - frameTime)/(frames[frameIndex + LAST_FRAME_TIME] - frameTime), 0, 1);
+			percent = GetCurvePercent(frameIndex/5 - 1, percent);
+
+			float r = lastFrameR + (frames[frameIndex + FRAME_R] - lastFrameR)*percent;
+			float g = lastFrameG + (frames[frameIndex + FRAME_G] - lastFrameG)*percent;
+			float b = lastFrameB + (frames[frameIndex + FRAME_B] - lastFrameB)*percent;
+			float a = lastFrameA + (frames[frameIndex + FRAME_A] - lastFrameA)*percent;
 
 			if (alpha < 1)
 			{
-				color = new Color (
-					MathUtils.Clamp (color.R + ((r - color.R) * alpha), 0, 1),
-					MathUtils.Clamp (color.G + ((g - color.G) * alpha), 0, 1),
-					MathUtils.Clamp (color.B + ((b - color.B) * alpha), 0, 1),
-					MathUtils.Clamp (color.A + ((a - color.A) * alpha), 0, 1));
+				color = new Color(
+					MathUtils.Clamp(color.R + ((r - color.R)*alpha), 0, 1),
+					MathUtils.Clamp(color.G + ((g - color.G)*alpha), 0, 1),
+					MathUtils.Clamp(color.B + ((b - color.B)*alpha), 0, 1),
+					MathUtils.Clamp(color.A + ((a - color.A)*alpha), 0, 1));
 			}
 			else
 			{
-				color = new Color (r, g, b, a);
+				color = new Color(r, g, b, a);
 			}
+		}
+
+		#endregion
+
+		public void SetSlotIndex(int index)
+		{
+			slotIndex = index;
+		}
+
+		/** Sets the time and value of the specified keyframe. */
+
+		public void SetKeyframe(int keyframeIndex, float time, float r, float g, float b, float a)
+		{
+			keyframeIndex *= 5;
+			frames[keyframeIndex] = time;
+			frames[keyframeIndex + 1] = r;
+			frames[keyframeIndex + 2] = g;
+			frames[keyframeIndex + 3] = b;
+			frames[keyframeIndex + 4] = a;
 		}
 	}
 }
-

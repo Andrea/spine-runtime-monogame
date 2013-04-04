@@ -59,7 +59,7 @@ namespace Spine.Runtime.MonoGame
 			}
 			
 			String attachmentName = this.attachmentNames [frameIndex];
-			skeleton.slots [slotIndex].SetAttachment (
+			skeleton.Slots [slotIndex].SetAttachment (
 				attachmentName == null ? null : skeleton.GetAttachment (slotIndex, attachmentName));
 		}
 	}

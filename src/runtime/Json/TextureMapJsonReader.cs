@@ -1,22 +1,12 @@
-/// <summary>
-/// TextureMapJsonReader.cs
-/// </summary>
-
-using System.Text;
+using System.Collections.Generic;
+using System.IO;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json.Linq;
+using Spine.Runtime.MonoGame.Graphics;
 
 namespace Spine.Runtime.MonoGame.Json
 {
-	using System;
-	using System.Collections.Generic;
-	using System.IO;
-
-	using Microsoft.Xna.Framework;
-	using Microsoft.Xna.Framework.Graphics;
-
-	using Newtonsoft.Json.Linq;
-
-	using Graphics;
-
 	public class TextureMapJsonReader : BaseJsonReader
 	{
 		/*
@@ -35,52 +25,54 @@ namespace Spine.Runtime.MonoGame.Json
 			},
 
 	    */
-
+#if WINDOWS
+		public TextureAtlas ReadTextureJsonFile(string jsonFile, Texture2D texture)
+#elif ANDROID
 		public TextureAtlas ReadTextureJsonFile (AndroidGameActivity activity, string jsonFile, Texture2D texture)
+#endif
 		{
-			Dictionary<string, TextureRegion> regions = new Dictionary<string, TextureRegion>();
+			var regions = new Dictionary<string, TextureRegion>();
 
 			string jsonText = null;
-#if iOS
-			jsonText = File.ReadAllText (jsonFile);
+#if WINDOWS
+			jsonText = File.ReadAllText(jsonFile);
 #elif ANDROID
 
 			using (var inputStram = activity.Assets.Open(jsonFile))
 			{
 				jsonText = new StreamReader(inputStram).ReadToEnd();
 			}
-#endif			
-			JObject data = JObject.Parse (jsonText);
+#endif
+			JObject data = JObject.Parse(jsonText);
 
-			foreach (var frame in data["frames"])
+			foreach (JToken frame in data["frames"])
 			{
 				Rectangle textureAtlasArea;
 
-				string filename = Path.GetFileNameWithoutExtension((string)frame["filename"]);
+				string filename = Path.GetFileNameWithoutExtension((string) frame["filename"]);
 
-				var rotated = this.Read<bool>(frame, "rotated", false);
+				bool rotated = Read(frame, "rotated", false);
 
-				var details = frame["frame"];
-				var x = this.Read<int>(details, "x", 0);
-				var y = this.Read<int>(details, "y", 0);
-				var width = this.Read<int>(details, "w", 0);
-				var height = this.Read<int>(details, "h", 0);
+				JToken details = frame["frame"];
+				int x = Read(details, "x", 0);
+				int y = Read(details, "y", 0);
+				int width = Read(details, "w", 0);
+				int height = Read(details, "h", 0);
 
 				if (rotated)
 				{
 					// The image inside our texture map is rotated so swap width and height
-					textureAtlasArea =new Rectangle(x, y, height, width);
+					textureAtlasArea = new Rectangle(x, y, height, width);
 				}
 				else
 				{
-					textureAtlasArea =new Rectangle(x, y, width, height);
+					textureAtlasArea = new Rectangle(x, y, width, height);
 				}
 
-				regions.Add(filename, new TextureRegion (texture, rotated, textureAtlasArea));
+				regions.Add(filename, new TextureRegion(texture, rotated, textureAtlasArea));
 			}
 
 			return new TextureAtlas(texture, regions);
 		}
 	}
 }
-
